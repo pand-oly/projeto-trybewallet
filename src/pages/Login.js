@@ -43,12 +43,14 @@ class Login extends React.Component {
         <InputEl
           id="email-input"
           name="email"
+          type="email"
           value={ email }
           checkFormValid={ this.handeChange }
         />
         <InputEl
           id="password-input"
           name="password"
+          type="password"
           value={ password }
           checkFormValid={ this.handeChange }
         />
