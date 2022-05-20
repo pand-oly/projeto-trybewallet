@@ -1,5 +1,5 @@
 const INITIAL_STATE = {
-  email: '',
+  email: 'test@test.com',
 };
 
 function loginReducer(state = INITIAL_STATE, action) {

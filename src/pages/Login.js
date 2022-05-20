@@ -45,14 +45,16 @@ class Login extends React.Component {
           name="email"
           type="email"
           value={ email }
-          checkFormValid={ this.handeChange }
+          placeholder="Email"
+          handeChange={ this.handeChange }
         />
         <InputEl
           id="password-input"
           name="password"
           type="password"
+          placeholder="Password"
           value={ password }
-          checkFormValid={ this.handeChange }
+          handeChange={ this.handeChange }
         />
         <ButtonEl state={ disabled } name="Entrar" handeSubimit={ this.handeSubimit } />
       </fieldset>

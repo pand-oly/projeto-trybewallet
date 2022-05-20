@@ -2,16 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 function InputEl(props) {
-  const { name, id, checkFormValid, value, type } = props;
+  const { name, id, handeChange, value, type, placeholder } = props;
   return (
     <input
       id={ id }
       type={ type }
       name={ name }
       value={ value }
-      placeholder={ name }
+      placeholder={ placeholder }
       data-testid={ id }
-      onChange={ checkFormValid }
+      onChange={ handeChange }
     />
   );
 }
@@ -20,8 +20,9 @@ InputEl.propTypes = {
   name: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
-  checkFormValid: PropTypes.func.isRequired,
+  handeChange: PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,
+  placeholder: PropTypes.string.isRequired,
 };
 
 export default InputEl;
