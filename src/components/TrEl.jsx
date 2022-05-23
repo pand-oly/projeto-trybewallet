@@ -36,23 +36,23 @@ class TrEl extends Component {
       id, description, tag, method, value, currency, exchangeRates,
     } = expense;
     return isloading ? (<Loading />) : (
-      <tr id={ id }>
-        <th>{description}</th>
-        <th>{tag}</th>
-        <th>{method}</th>
-        <th>{value}</th>
-        <th>{exchangeRates[currency].name}</th>
-        <th>{exchangeRates[currency].ask}</th>
-        <th>{convertedValue.toFixed(2)}</th>
-        <th>{exchangeRates[currency].name.split('/')[1]}</th>
-        <th>
+      <tr>
+        <td>{description}</td>
+        <td>{tag}</td>
+        <td>{method}</td>
+        <td>{Number(value).toFixed(2)}</td>
+        <td>{exchangeRates[currency].name}</td>
+        <td>{Number(exchangeRates[currency].ask).toFixed(2)}</td>
+        <td>{convertedValue.toFixed(2)}</td>
+        <td>Real</td>
+        <td>
           <button type="button" onClick={ console.log(id) }>
             Editar
           </button>
           <button data-testid="delete-btn" type="button" onClick={ this.delet }>
             Excluir
           </button>
-        </th>
+        </td>
       </tr>
     );
   }
