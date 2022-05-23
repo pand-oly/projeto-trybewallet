@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import calcTotal from './service/calcTotal';
 
 function Header(props) {
-  const { email, totalExpenses = 0 } = props;
+  const { email, expenses = 0 } = props;
   return (
     <header>
       <div>Wallet Logo</div>
@@ -15,7 +16,7 @@ function Header(props) {
       </div>
       <div>
         <span>Despesa Total: R$ </span>
-        <span data-testid="total-field">{totalExpenses.toFixed(2)}</span>
+        <span data-testid="total-field">{calcTotal(expenses)}</span>
         <span data-testid="header-currency-field"> BRL</span>
       </div>
     </header>
@@ -24,12 +25,12 @@ function Header(props) {
 
 const mapStateToProps = (state) => ({
   email: state.user.email,
-  totalExpenses: state.wallet.totalExpenses,
+  expenses: state.wallet.expenses,
 });
 
 Header.propTypes = {
   email: PropTypes.string.isRequired,
-  totalExpenses: PropTypes.number.isRequired,
+  expenses: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
 export default connect(mapStateToProps)(Header);
