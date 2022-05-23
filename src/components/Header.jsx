@@ -15,7 +15,7 @@ function Header(props) {
       </div>
       <div>
         <span>Despesa Total: R$ </span>
-        <span data-testid="total-field">{totalExpenses}</span>
+        <span data-testid="total-field">{totalExpenses.toFixed(2)}</span>
         <span data-testid="header-currency-field"> BRL</span>
       </div>
     </header>

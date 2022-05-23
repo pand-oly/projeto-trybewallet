@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Loading from './Loading';
-import { removeExpense, totalExpenseSub } from '../actions';
+import { removeExpense, totalExpenseSub, totalExpenseSum } from '../actions';
 import currencyConverter from './service/currencyConverter';
 
 class TrEl extends Component {
@@ -12,13 +12,14 @@ class TrEl extends Component {
   }
 
   componentDidMount() {
-    const { expense } = this.props;
+    const { expense, handleTotalSum } = this.props;
     const { value, exchangeRates, currency } = expense;
 
     const convertedValue = currencyConverter(
       Number(value), Number(exchangeRates[currency].ask),
     );
     this.setState({ isloading: false, expense, convertedValue });
+    handleTotalSum(convertedValue);
   }
 
   delet = () => {
@@ -40,15 +41,15 @@ class TrEl extends Component {
         <th>{tag}</th>
         <th>{method}</th>
         <th>{value}</th>
-        <th>{currency}</th>
+        <th>{exchangeRates[currency].name}</th>
         <th>{exchangeRates[currency].ask}</th>
-        <th>{convertedValue}</th>
+        <th>{convertedValue.toFixed(2)}</th>
         <th>{exchangeRates[currency].name.split('/')[1]}</th>
         <th>
           <button type="button" onClick={ console.log(id) }>
             Editar
           </button>
-          <button type="button" onClick={ this.delet }>
+          <button data-testid="delete-btn" type="button" onClick={ this.delet }>
             Excluir
           </button>
         </th>
@@ -61,18 +62,20 @@ const mapDispatchToProps = (dispatch) => ({
   // handleClickEditar: () => dispatch(),
   handleClickExcluir: (id) => dispatch(removeExpense(id)),
   handleTotalSub: (value) => dispatch(totalExpenseSub(value)),
+  handleTotalSum: (value) => dispatch(totalExpenseSum(value)),
 });
 
 TrEl.propTypes = {
   expense: PropTypes.shape({
     id: PropTypes.number.isRequired,
-    value: PropTypes.number.isRequired,
+    value: PropTypes.string.isRequired,
     currency: PropTypes.string.isRequired,
     exchangeRates: PropTypes.objectOf(PropTypes.object).isRequired,
   }).isRequired,
   handleClickExcluir: PropTypes.func.isRequired,
   // handleClickEditar: PropTypes.func.isRequired,
   handleTotalSub: PropTypes.func.isRequired,
+  handleTotalSum: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(TrEl);

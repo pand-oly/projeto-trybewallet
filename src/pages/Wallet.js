@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import ExpenseList from '../components/ExpenseList';
-import { actionTunk, getCurrenciesApi } from '../actions';
+import { actionTunkCurrencies, getCurrenciesApi } from '../actions';
 import FormeExpense from '../components/FormeExpense';
 
 class Wallet extends React.Component {
@@ -25,7 +25,7 @@ class Wallet extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  requestApi: (action) => dispatch(actionTunk(action)),
+  requestApi: () => dispatch(actionTunkCurrencies()),
 });
 
 Wallet.propTypes = {

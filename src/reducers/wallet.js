@@ -1,12 +1,11 @@
 import {
-  GET_CURRENCIES, ADD_EXPENSES, GET_EXCHANGE_RATES,
+  GET_CURRENCIES, ADD_EXPENSES,
   REMOVE_EXPENSE_ARRAY, TOTAL_EXPENSE_SUM, TOTAL_EXPENSE_SUB,
 } from '../actions';
 
 const INITIAL_STATE = {
   currencies: [],
   expenses: [],
-  exchangeRates: {},
   totalExpenses: 0,
 };
 
@@ -23,12 +22,7 @@ function walletReducer(state = INITIAL_STATE, action) {
   case ADD_EXPENSES:
     return {
       ...state,
-      expenses: [...state.expenses, action.expenses],
-    };
-  case GET_EXCHANGE_RATES:
-    return {
-      ...state,
-      exchangeRates: action.exchangeRates,
+      expenses: [...state.expenses, action.payload],
     };
   case TOTAL_EXPENSE_SUM:
     return {

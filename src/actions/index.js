@@ -15,8 +15,8 @@ export const getCurrenciesApi = (currencies) => ({
   type: 'GET_CURRENCIES', currencies,
 });
 
-export const adcExpense = (expenses) => ({
-  type: 'ADD_EXPENSES', expenses,
+export const adcExpense = (rates, expense) => ({
+  type: 'ADD_EXPENSES', payload: { ...expense, exchangeRates: rates },
 });
 
 export const getExchangeRatesApi = (exchangeRates) => ({
@@ -35,16 +35,22 @@ export const totalExpenseSub = (value) => ({
   type: 'TOTAL_EXPENSE_SUB', value,
 });
 
-export const actionTunk = (action) => {
+export const actionTunkCurrencies = () => {
   const URL_API = 'https://economia.awesomeapi.com.br/json/all';
   return async (dispatch) => {
-    try {
-      const response = await fetch(URL_API);
-      const data = await response.json();
-      delete data.USDT;
-      return dispatch(action(data));
-    } catch (error) {
-      return error;
-    }
+    const response = await fetch(URL_API);
+    const data = await response.json();
+    delete data.USDT;
+    return dispatch(getCurrenciesApi(data));
+  };
+};
+
+export const actionTunkRates = (expense) => {
+  const URL_API = 'https://economia.awesomeapi.com.br/json/all';
+  return async (dispatch) => {
+    const response = await fetch(URL_API);
+    const data = await response.json();
+    delete data.USDT;
+    dispatch(adcExpense(data, expense));
   };
 };

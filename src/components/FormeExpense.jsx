@@ -4,11 +4,8 @@ import { connect } from 'react-redux';
 import InputEl from './InputEl';
 import SelectEl from './SelectEl';
 import ButtonEl from './ButtonEl';
-import {
-  adcExpense, totalExpenseSum, getExchangeRatesApi, actionTunk,
-} from '../actions';
+import { actionTunkRates } from '../actions';
 import validExpenseForm from './service/validExpenseForm';
-import currencyConverter from './service/currencyConverter';
 
 const STANDARD_TAG = 'Alimentação';
 
@@ -24,13 +21,8 @@ class FormeExpense extends Component {
       method: 'Dinheiro',
       tag: STANDARD_TAG,
       description: '',
+      exchangeRates: '',
     };
-  }
-
-  componentDidMount() {
-    const { requestApi } = this.props;
-
-    requestApi(getExchangeRatesApi);
   }
 
   handeChange = ({ target: { name, value } }) => {
@@ -41,26 +33,19 @@ class FormeExpense extends Component {
   }
 
   handeSubimit = () => {
-    const { addExpenses, exchangeRates, calcTotal } = this.props;
-    this.setState({ exchangeRates }, () => {
-      const validated = validExpenseForm(this.state);
-      const { id, currency, value } = validated;
+    const { dispatch } = this.props;
 
-      const cuvertedValue = currencyConverter(
-        Number(value), Number(exchangeRates[currency].ask),
-      );
+    const validated = validExpenseForm(this.state);
+    dispatch(actionTunkRates(validated));
 
-      addExpenses(validated);
-      calcTotal(cuvertedValue);
-
-      this.setState({
-        id: id + 1,
-        value: '',
-        currency: 'USD',
-        method: 'Dinheiro',
-        tag: STANDARD_TAG,
-        description: '',
-      });
+    const { id } = validated;
+    this.setState({
+      id: id + 1,
+      value: '',
+      currency: 'USD',
+      method: 'Dinheiro',
+      tag: STANDARD_TAG,
+      description: '',
     });
   }
 
@@ -125,19 +110,10 @@ const mapStateToProps = (state) => ({
   exchangeRates: state.wallet.exchangeRates,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  addExpenses: (state) => dispatch(adcExpense(state)),
-  calcTotal: (state) => dispatch(totalExpenseSum(state)),
-  requestApi: (action) => dispatch(actionTunk(action)),
-});
-
 FormeExpense.propTypes = {
-  addExpenses: PropTypes.func.isRequired,
   arrayExpenses: PropTypes.arrayOf(PropTypes.object).isRequired,
-  calcTotal: PropTypes.func.isRequired,
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
-  exchangeRates: PropTypes.objectOf(PropTypes.object).isRequired,
-  requestApi: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FormeExpense);
+export default connect(mapStateToProps)(FormeExpense); // , mapDispatchToProps
