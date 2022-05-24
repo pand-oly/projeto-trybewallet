@@ -4,35 +4,35 @@ export const ADD_EXPENSES = 'ADD_EXPENSES';
 export const GET_EXCHANGE_RATES = 'GET_EXCHANGE_RATES';
 export const REMOVE_EXPENSE_ARRAY = 'REMOVE_EXPENSE_ARRAY';
 export const ADC_TOTAL_EXPENSES = 'ADC_TOTAL_EXPENSES';
-export const TOTAL_EXPENSE_SUM = 'TOTAL_EXPENSE_SUM';
-export const TOTAL_EXPENSE_SUB = 'TOTAL_EXPENSE_SUB';
+export const EXPENSE_FOR_T0_EDIT = 'EXPENSE_FOR_T0_EDIT';
+export const EXPENSE_EDITED = 'EXPENSE_EDITED';
 
 export const userEmail = (email) => ({
-  type: 'USER_EMAIL', email,
+  type: USER_EMAIL, email,
 });
 
 export const getCurrenciesApi = (currencies) => ({
-  type: 'GET_CURRENCIES', currencies,
+  type: GET_CURRENCIES, currencies,
 });
 
 export const adcExpense = (rates, expense) => ({
-  type: 'ADD_EXPENSES', payload: { ...expense, exchangeRates: rates },
+  type: ADD_EXPENSES, payload: { ...expense, exchangeRates: rates },
 });
 
 export const getExchangeRatesApi = (exchangeRates) => ({
-  type: 'GET_EXCHANGE_RATES', exchangeRates,
-});
-
-export const totalExpenseSum = (value) => ({
-  type: 'TOTAL_EXPENSE_SUM', value,
+  type: GET_EXCHANGE_RATES, exchangeRates,
 });
 
 export const removeExpense = (id) => ({
-  type: 'REMOVE_EXPENSE_ARRAY', id,
+  type: REMOVE_EXPENSE_ARRAY, id,
 });
 
-export const totalExpenseSub = (value) => ({
-  type: 'TOTAL_EXPENSE_SUB', value,
+export const editExpense = (expense) => ({
+  type: EXPENSE_FOR_T0_EDIT, expense,
+});
+
+export const adcExpenseEdited = (newExpense) => ({
+  type: EXPENSE_EDITED, newExpense,
 });
 
 export const actionTunkCurrencies = () => {

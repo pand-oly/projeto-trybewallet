@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Loading from './Loading';
-import { removeExpense, totalExpenseSub, totalExpenseSum } from '../actions';
+import { removeExpense, editExpense } from '../actions';
 import currencyConverter from './service/currencyConverter';
 
 class TrEl extends Component {
@@ -12,28 +12,29 @@ class TrEl extends Component {
   }
 
   componentDidMount() {
-    const { expense, handleTotalSum } = this.props;
+    const { expense } = this.props;
     const { value, exchangeRates, currency } = expense;
 
     const convertedValue = currencyConverter(
       Number(value), Number(exchangeRates[currency].ask),
     );
     this.setState({ isloading: false, expense, convertedValue });
-    handleTotalSum(convertedValue);
   }
 
-  delet = () => {
-    const { handleClickExcluir, handleTotalSub, expense } = this.props;
-    const { convertedValue } = this.state;
+  edit = () => {
+    const { expense, handleClickEditar } = this.props;
+    handleClickEditar(expense);
+  };
 
+  delet = () => {
+    const { handleClickExcluir, expense } = this.props;
     handleClickExcluir(expense.id);
-    handleTotalSub(convertedValue);
   }
 
   render() {
     const { expense, isloading, convertedValue } = this.state;
     const {
-      id, description, tag, method, value, currency, exchangeRates,
+      description, tag, method, value, currency, exchangeRates,
     } = expense;
     return isloading ? (<Loading />) : (
       <tr>
@@ -46,7 +47,7 @@ class TrEl extends Component {
         <td>{convertedValue.toFixed(2)}</td>
         <td>Real</td>
         <td>
-          <button type="button" onClick={ console.log(id) }>
+          <button data-testid="edit-btn" type="button" onClick={ this.edit }>
             Editar
           </button>
           <button data-testid="delete-btn" type="button" onClick={ this.delet }>
@@ -59,23 +60,19 @@ class TrEl extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  // handleClickEditar: () => dispatch(),
+  handleClickEditar: (expense) => dispatch(editExpense(expense)),
   handleClickExcluir: (id) => dispatch(removeExpense(id)),
-  handleTotalSub: (value) => dispatch(totalExpenseSub(value)),
-  handleTotalSum: (value) => dispatch(totalExpenseSum(value)),
 });
 
 TrEl.propTypes = {
   expense: PropTypes.shape({
     id: PropTypes.number.isRequired,
-    value: PropTypes.string.isRequired,
+    value: PropTypes.number || PropTypes.string,
     currency: PropTypes.string.isRequired,
     exchangeRates: PropTypes.objectOf(PropTypes.object).isRequired,
   }).isRequired,
   handleClickExcluir: PropTypes.func.isRequired,
-  // handleClickEditar: PropTypes.func.isRequired,
-  handleTotalSub: PropTypes.func.isRequired,
-  handleTotalSum: PropTypes.func.isRequired,
+  handleClickEditar: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(TrEl);

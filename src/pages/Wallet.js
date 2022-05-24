@@ -2,9 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
+import FormExpense from '../components/FormExpense';
+import FormEdit from '../components/FormEdit';
 import ExpenseList from '../components/ExpenseList';
 import { actionTunkCurrencies, getCurrenciesApi } from '../actions';
-import FormeExpense from '../components/FormeExpense';
 
 class Wallet extends React.Component {
   componentDidMount() {
@@ -14,22 +15,28 @@ class Wallet extends React.Component {
   }
 
   render() {
+    const { editMode } = this.props;
     return (
       <div>
         <Header />
-        <FormeExpense />
+        {editMode ? (<FormEdit />) : (<FormExpense />)}
         <ExpenseList />
       </div>
     );
   }
 }
 
+const mapStateToProps = (state) => ({
+  editMode: state.wallet.editMode,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   requestApi: () => dispatch(actionTunkCurrencies()),
 });
 
 Wallet.propTypes = {
+  editMode: PropTypes.bool.isRequired,
   requestApi: PropTypes.func.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(Wallet);
+export default connect(mapStateToProps, mapDispatchToProps)(Wallet);

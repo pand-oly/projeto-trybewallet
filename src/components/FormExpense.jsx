@@ -9,7 +9,7 @@ import validExpenseForm from './service/validExpenseForm';
 
 const STANDARD_TAG = 'Alimentação';
 
-class FormeExpense extends Component {
+class FormExpense extends Component {
   constructor(props) {
     super(props);
 
@@ -63,7 +63,7 @@ class FormeExpense extends Component {
           handeChange={ this.handeChange }
         />
         <SelectEl
-          id="coin-input"
+          id="currency-input"
           name="currency"
           value={ currency }
           nameElement="Moeda"
@@ -110,10 +110,10 @@ const mapStateToProps = (state) => ({
   exchangeRates: state.wallet.exchangeRates,
 });
 
-FormeExpense.propTypes = {
+FormExpense.propTypes = {
   arrayExpenses: PropTypes.arrayOf(PropTypes.object).isRequired,
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
   dispatch: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(FormeExpense); // , mapDispatchToProps
+export default connect(mapStateToProps)(FormExpense); // , mapDispatchToProps

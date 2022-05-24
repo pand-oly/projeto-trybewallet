@@ -1,16 +1,14 @@
 import {
-  GET_CURRENCIES, ADD_EXPENSES,
-  REMOVE_EXPENSE_ARRAY, TOTAL_EXPENSE_SUM, TOTAL_EXPENSE_SUB,
+  GET_CURRENCIES, ADD_EXPENSES, EXPENSE_EDITED,
+  REMOVE_EXPENSE_ARRAY, EXPENSE_FOR_T0_EDIT,
 } from '../actions';
 
 const INITIAL_STATE = {
   currencies: [],
   expenses: [],
-  totalExpenses: 0,
+  toEdit: '',
+  editMode: false,
 };
-
-const resultCalcTotal = (total, valor) => Number(total) + Number(valor);
-const resultSubTotal = (total, valor) => Number(total) - Number(valor);
 
 function walletReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
@@ -24,20 +22,24 @@ function walletReducer(state = INITIAL_STATE, action) {
       ...state,
       expenses: [...state.expenses, action.payload],
     };
-  case TOTAL_EXPENSE_SUM:
-    return {
-      ...state,
-      totalExpenses: resultCalcTotal(state.totalExpenses, action.value),
-    };
-  case TOTAL_EXPENSE_SUB:
-    return {
-      ...state,
-      totalExpenses: resultSubTotal(state.totalExpenses, action.value),
-    };
   case REMOVE_EXPENSE_ARRAY:
     return {
       ...state,
       expenses: state.expenses.filter(({ id }) => id !== action.id),
+    };
+  case EXPENSE_FOR_T0_EDIT:
+    return {
+      ...state,
+      toEdit: action.expense,
+      editMode: true,
+    };
+  case EXPENSE_EDITED:
+    return {
+      ...state,
+      expenses: [...state.expenses].map((expense) => (
+        expense.id === state.toEdit.id ? { ...expense, ...action.newExpense } : expense
+      )),
+      editMode: false,
     };
   default:
     return state;
