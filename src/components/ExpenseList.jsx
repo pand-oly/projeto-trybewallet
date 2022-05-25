@@ -6,7 +6,6 @@ import TrEl from './TrEl';
 class ExpenseList extends React.Component {
   render() {
     const { expenses } = this.props;
-    console.log(expenses);
     return (
       <table>
         <thead>
