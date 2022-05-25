@@ -8,17 +8,11 @@ import currencyConverter from './service/currencyConverter';
 class TrEl extends Component {
   constructor() {
     super();
-    this.state = { isloading: true, expense: {} };
+    this.state = { isloading: true };
   }
 
   componentDidMount() {
-    const { expense } = this.props;
-    const { value, exchangeRates, currency } = expense;
-
-    const convertedValue = currencyConverter(
-      Number(value), Number(exchangeRates[currency].ask),
-    );
-    this.setState({ isloading: false, expense, convertedValue });
+    this.setState({ isloading: false });
   }
 
   edit = () => {
@@ -32,10 +26,12 @@ class TrEl extends Component {
   }
 
   render() {
-    const { expense, isloading, convertedValue } = this.state;
+    const { isloading } = this.state;
+    const { expense } = this.props;
     const {
       description, tag, method, value, currency, exchangeRates,
     } = expense;
+    console.log(expense);
     return isloading ? (<Loading />) : (
       <tr>
         <td>{description}</td>
@@ -44,7 +40,9 @@ class TrEl extends Component {
         <td>{Number(value).toFixed(2)}</td>
         <td>{exchangeRates[currency].name}</td>
         <td>{Number(exchangeRates[currency].ask).toFixed(2)}</td>
-        <td>{convertedValue.toFixed(2)}</td>
+        <td>
+          {currencyConverter(Number(value), Number(exchangeRates[currency].ask))}
+        </td>
         <td>Real</td>
         <td>
           <button data-testid="edit-btn" type="button" onClick={ this.edit }>
@@ -69,6 +67,9 @@ TrEl.propTypes = {
     id: PropTypes.number.isRequired,
     value: PropTypes.number || PropTypes.string,
     currency: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    tag: PropTypes.string.isRequired,
+    method: PropTypes.string.isRequired,
     exchangeRates: PropTypes.objectOf(PropTypes.object).isRequired,
   }).isRequired,
   handleClickExcluir: PropTypes.func.isRequired,
